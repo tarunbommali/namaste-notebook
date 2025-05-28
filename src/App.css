@@ -1,0 +1,165 @@
+/*
+ * 1. DEFINE COLOR THEMES
+ * We use the :root for the default (light) theme
+ * and an attribute selector for the dark theme.
+ */
+
+:root {
+  --bg-color: #f0f2f5;
+  --content-bg-color: #ffffff;
+  --text-color: #333;
+  --heading-color: #111;
+  --link-color: #0366d6;
+  --border-color: #eaecef;
+  --table-border-color: #dfe2e5;
+  --table-header-bg: #f6f8fa;
+  --code-bg-color: rgba(27, 31, 35, 0.05);
+  --blockquote-border-color: #dfe2e5;
+  --blockquote-text-color: #6a737d;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] {
+  --bg-color: #0d1117;
+  --content-bg-color: #161b22;
+  --text-color: #c9d1d9;
+  --heading-color: #ffffff;
+  --link-color: #58a6ff;
+  --border-color: #30363d;
+  --table-border-color: #30363d;
+  --table-header-bg: #21262d;
+  --code-bg-color: rgba(240, 246, 252, 0.15);
+  --blockquote-border-color: #30363d;
+  --blockquote-text-color: #8b949e;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+}
+
+
+/*
+ * 2. USE THE VARIABLES IN YOUR EXISTING STYLES
+ */
+
+body {
+  background-color: var(--bg-color);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.App-header {
+  background-color: var(--content-bg-color);
+  box-shadow: 0 2px 4px var(--shadow-color);
+  padding: 1rem;
+  color: var(--heading-color);
+  display:flex;
+  justify-content: between;
+  items: center;
+  font-size: thin;
+}
+
+.theme-toggle-button {
+  background-color: var(--code-bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+.theme-toggle-button:hover {
+  border-color: var(--link-color);
+}
+
+
+/* MARKDOWN CONTAINER STYLES (now with variables) */
+.markdown-content {
+  text-align: left;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--content-bg-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px var(--shadow-color);
+  line-height: 1.7;
+  color: var(--text-color);
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+/* Headings */
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.3em;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  color: var(--heading-color);
+}
+.markdown-content h1 { font-size: 2em; }
+.markdown-content h2 { font-size: 1.5em; }
+.markdown-content h3 { font-size: 1.25em; }
+
+/* Links */
+.markdown-content a {
+  color: var(--link-color);
+  text-decoration: none;
+}
+.markdown-content a:hover { text-decoration: underline; }
+
+/* Blockquotes */
+.markdown-content blockquote {
+  padding: 0 1em;
+  color: var(--blockquote-text-color);
+  border-left: 0.25em solid var(--blockquote-border-color);
+  margin-left: 0;
+}
+
+/* Inline Code and Code Blocks */
+.markdown-content code {
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  background-color: var(--code-bg-color);
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  border-radius: 3px;
+}
+.markdown-content pre {
+  background-color: var(--table-header-bg); /* Use a slightly different bg for blocks */
+  border-radius: 3px;
+  padding: 16px;
+  overflow: auto;
+}
+.markdown-content pre code {
+  background-color: transparent;
+  border: none;
+}
+
+/* Tables */
+.markdown-content table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  border-spacing: 0;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+.markdown-content th,
+.markdown-content td {
+  padding: 6px 13px;
+  border: 1px solid var(--table-border-color);
+}
+.markdown-content thead {
+  background-color: var(--table-header-bg);
+  font-weight: bold;
+}
+
+/* Horizontal Rule */
+.markdown-content hr {
+  height: 0.25em;
+  padding: 0;
+  margin: 24px 0;
+  background-color: var(--border-color);
+  border: 0;
+}
