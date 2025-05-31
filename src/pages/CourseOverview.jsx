@@ -143,7 +143,7 @@ const CourseOverview = () => {
                   return (
                     <div
                       key={episode.id}
-                      className={`group rounded-lg p-4 transition-colors ${theme.bgColor} hover:${theme.cardBg}`}
+                      className={`group rounded-lg p-4 transition-colors   ${theme.cardBorder} ${theme.cardBg}`}
                     >
                       <Link to={episodePath}>
                         <div className="flex items-start justify-between mb-2">
@@ -155,7 +155,7 @@ const CourseOverview = () => {
                               e.preventDefault();
                               toggleBookmark(episodePath);
                             }}
-                            className="ml-2 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="ml-2 p-1 rounded opacity-90 group-hover:opacity-100 transition-opacity"
                           >
                             {isBookmarked ? (
                               <BsBookmarkFill size={14} className="text-yellow-500" />

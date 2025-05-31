@@ -4,6 +4,7 @@ import Markdown from '../src/pages/Markdown'
 import { BrowserRouter, Routes, Route , Navigate} from 'react-router-dom'
 import {useTheme} from '../src/hook/useTheme'
 import Header from '../src/components/Header'
+import Bookmarks from './pages/Bookmarks'
 
 const App = () => {
   useTheme();
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/:courseId" element={<CourseOverview />} />
           <Route path="/:courseId/:seasonId/:episodeId" element={<Markdown />} />
+          <Route path='/bookmarks' element={<Bookmarks/>}/>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>

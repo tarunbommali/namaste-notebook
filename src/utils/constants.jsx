@@ -2,6 +2,8 @@ export const courseList = [
   {
     id: "namaste-node",
     courseTitle: "Namaste Node",
+    icon: "🌟",
+
     seasons: [
       {
         id: "season-1",
@@ -189,6 +191,8 @@ export const courseList = [
   {
     id: "namaste-react",
     courseTitle: "Namaste React",
+    icon: "⚛️",
+
     seasons: [
       {
         id: "season-1",
@@ -353,4 +357,4 @@ export const courseList = [
 ];
 
 export const REPO_URL = "https://github.com/tarunbommali/namaste-notebook";
-export const WEBSITE_URL = "https://namastenotebook.vercel.app/"
+export const WEBSITE_URL = "https://namastenotebook.vercel.app/";
