@@ -58,7 +58,7 @@ export const useTheme = () => {
 
       card: "bg-card-dark",
       cardBG: "bg-black",
-      cardBorder: "border border-[#1c1f29]",
+      cardBorder: "border border-[#99a1af]",
 
 
       headingColor: "text-blue-400",

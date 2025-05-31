@@ -11,13 +11,19 @@ const Sidebar = ({ course }) => {
   const { bookmarks, toggleBookmark } = useBookmarks();
   const theme = useTheme();
 
+  const [activeSeasonId, setActiveSeasonId] = useState(
+    course?.seasons?.[0]?.id
+  );
+
   const filteredEpisodes =
     course?.seasons.flatMap((season) =>
       season.episodes
         .filter(
           (episode) =>
             episode.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            episode.description?.toLowerCase().includes(searchTerm.toLowerCase())
+            episode.description
+              ?.toLowerCase()
+              .includes(searchTerm.toLowerCase())
         )
         .map((episode) => ({
           ...episode,
@@ -28,14 +34,20 @@ const Sidebar = ({ course }) => {
 
   return (
     <>
-<aside className={`hidden md:block fixed left-0 top-16 h-[calc(100vh-4rem)] w-80 ${theme.background} z-50 overflow-y-auto`}>
+      <aside
+        className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-80 ${theme.background} z-50 overflow-y-auto`}
+      >
         <div className="py-6 px-4">
           {/* Course Title */}
           <div className="mb-6">
-            <h2 className={`text-lg font-semibold flex items-center ${theme.textPrimary}`}>
+            <h2
+              className={`text-lg font-semibold flex items-center ${theme.textPrimary}`}
+            >
               {course?.icon} <span className="ml-2">{course?.courseTitle}</span>
             </h2>
-            <p className={`text-sm mt-1 ${theme.textSecondary}`}>{course?.description}</p>
+            <p className={`text-sm mt-1 ${theme.textSecondary}`}>
+              {course?.description}
+            </p>
           </div>
 
           {/* Search */}
@@ -70,12 +82,18 @@ const Sidebar = ({ course }) => {
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">{episode.title}</p>
-                            <p className={`text-xs mt-1 truncate ${theme.textTertiary}`}>
+                            <p className="text-sm font-medium truncate">
+                              {episode.title}
+                            </p>
+                            <p
+                              className={`text-xs mt-1 truncate ${theme.textTertiary}`}
+                            >
                               {episode.seasonTitle}
                             </p>
                             {episode.description && (
-                              <p className={`text-xs mt-1 line-clamp-2 ${theme.textTertiary}`}>
+                              <p
+                                className={`text-xs mt-1 line-clamp-2 ${theme.textTertiary}`}
+                              >
                                 {episode.description}
                               </p>
                             )}
@@ -88,9 +106,15 @@ const Sidebar = ({ course }) => {
                             className="ml-2 p-1"
                           >
                             {isBookmarked ? (
-                              <BsBookmarkFill size={14} className="text-yellow-500" />
+                              <BsBookmarkFill
+                                size={14}
+                                className="text-yellow-500"
+                              />
                             ) : (
-                              <BsBookmark size={14} className={`${theme.textTertiary}`} />
+                              <BsBookmark
+                                size={14}
+                                className={`${theme.textTertiary}`}
+                              />
                             )}
                           </button>
                         </div>
@@ -102,53 +126,78 @@ const Sidebar = ({ course }) => {
             ) : (
               course?.seasons.map((season) => (
                 <div key={season.id}>
-                  <h3 className={`text-sm font-semibold mb-3 flex items-center ${theme.textPrimary}`}>
-                    <div className={`w-2 h-2 rounded-full mr-2 ${theme.accent}`}></div>
-                    {season.title}
-                  </h3>
-                  <div className="space-y-1 pl-4">
-                    {season.episodes.map((episode) => {
-                      const episodePath = `/${course.id}/${season.id}/${episode.id}`;
-                      const isActive = location.pathname === episodePath;
-                      const isBookmarked = bookmarks.includes(episodePath);
+                  <button
+                    onClick={() =>
+                      setActiveSeasonId(
+                        activeSeasonId === season.id ? null : season.id
+                      )
+                    }
+                    className={`text-sm font-semibold mb-3 flex justify-between items-center w-full ${theme.textPrimary}`}
+                  >
+                    <div className="flex items-center">
+                      <div
+                        className={`w-2 h-2 rounded-full mr-2 ${theme.accent}`}
+                      ></div>
+                      {season.title}
+                    </div>
+                    <span>{activeSeasonId === season.id ? "-" : "+"}</span>
+                  </button>
 
-                      return (
-                        <div
-                          key={episode.id}
-                          className="group flex items-center justify-between rounded-lg p-2 transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-800"
-                        >
-                          <Link
-                            to={episodePath}
-                            className={`flex-1 min-w-0 ${
-                              isActive
-                                ? `${theme.accent} ${theme.accentForeground}`
-                                : `${theme.textSecondary} }`
-                            }`}
+                  {activeSeasonId === season.id && (
+                    <div className="space-y-1 pl-4">
+                      {season.episodes.map((episode) => {
+                        const episodePath = `/${course.id}/${season.id}/${episode.id}`;
+                        const isActive = location.pathname === episodePath;
+                        const isBookmarked = bookmarks.includes(episodePath);
+
+                        return (
+                          <div
+                            key={episode.id}
+                            className="group flex items-center justify-between rounded-lg p-2 transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-800"
                           >
-                            <p className="text-sm font-medium truncate">{episode.title}</p>
-                            {episode.description && (
-                              <p className={`text-xs mt-1 truncate ${theme.textTertiary}`}>
-                                {episode.description}
+                            <Link
+                              to={episodePath}
+                              className={`flex-1 min-w-0 ${
+                                isActive
+                                  ? `${theme.accent} ${theme.accentForeground}`
+                                  : `${theme.textSecondary}`
+                              }`}
+                            >
+                              <p className="text-sm font-medium truncate">
+                                {episode.title}
                               </p>
-                            )}
-                          </Link>
-                          <button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              toggleBookmark(episodePath);
-                            }}
-                            className="ml-2 p-1 rounded opacity-95 group-hover:opacity-100 transition-opacity"
-                          >
-                            {isBookmarked ? (
-                              <BsBookmarkFill size={14} className="text-yellow-500" />
-                            ) : (
-                              <BsBookmark size={14} className={`${theme.textTertiary}`} />
-                            )}
-                          </button>
-                        </div>
-                      );
-                    })}
-                  </div>
+                              {episode.description && (
+                                <p
+                                  className={`text-xs mt-1 truncate ${theme.textTertiary}`}
+                                >
+                                  {episode.description}
+                                </p>
+                              )}
+                            </Link>
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                toggleBookmark(episodePath);
+                              }}
+                              className="ml-2 p-1 rounded opacity-95 group-hover:opacity-100 transition-opacity"
+                            >
+                              {isBookmarked ? (
+                                <BsBookmarkFill
+                                  size={14}
+                                  className="text-yellow-500"
+                                />
+                              ) : (
+                                <BsBookmark
+                                  size={14}
+                                  className={`${theme.textTertiary}`}
+                                />
+                              )}
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               ))
             )}

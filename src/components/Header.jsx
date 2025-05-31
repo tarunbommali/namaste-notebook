@@ -98,17 +98,20 @@ const Header = ({ theme, toggleTheme }) => {
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div
-            className={`md:hidden mt-2 border-t ${themeStyles.border} pt-3 space-y-2`}
+            className={`md:hidden mt-2 border-t ${themeStyles.border} pt-3 space-y-2 min-h-[50vh]`}
           >
-            <Link
-              to="/"
-              className={`flex items-center space-x-3 px-4 py-2 rounded-lg 
-                ${themeStyles.btn.textPrimary} ${themeStyles.btn.hover} transition-all duration-300`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <RiHomeLine size={18} />
-              <span>Home</span>
-            </Link>
+            {navMenu.map(({ id, text, path, icon: Icon }) => (
+              <Link
+                key={id}
+                to={path}
+                className={`md:hidden flex items-center space-x-2 px-4 py-2 rounded-lg 
+                  ${themeStyles.btn.textPrimary} ${themeStyles.btn.hover} transition-all duration-300`}
+              >
+                <Icon size={18} />
+                <span className="font-medium">{text}</span>
+              </Link>
+            ))}
+
 
             <a
               href="https://github.com/tarunbommali/namaste-notebook"

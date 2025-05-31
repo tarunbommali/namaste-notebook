@@ -13,14 +13,14 @@ const HeroSection = ({theme}) => {
             `}
             >
               <Star className="w-3 h-3 md:w-4 md:h-4 mr-2 fill-current" />
-              By The Student of NamasteDev 💖
+              Developing By The Students of NamasteDev 💖
             </span>
           </div>
 
           <h1
             className={`
             text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black mb-6 md:mb-8 leading-tight px-2
-            ${theme.textPrimary}
+            ${theme.textPrimary} 
           `}
           >
             The Documentation makes
@@ -49,7 +49,7 @@ const HeroSection = ({theme}) => {
               rel="noopener noreferrer"
               className={`
                 px-6 py-3 md:px-8 md:py-4 rounded-2xl font-semibold text-base md:text-lg transition-all duration-300
-                ${theme.btnPrimary} hover:scale-105 hover:shadow-xl
+                ${theme.btnPrimary} ${theme.cardBorder} hover:scale-105 hover:shadow-xl
                 flex items-center justify-center gap-2 min-w-[180px] md:min-w-[200px]
               `}
             >
@@ -63,7 +63,7 @@ const HeroSection = ({theme}) => {
               rel="noopener noreferrer"
               className={`
                 px-6 py-3 md:px-8 md:py-4 rounded-2xl font-semibold text-base md:text-lg transition-all duration-300
-                ${theme.btnSecondary} hover:scale-105 hover:shadow-xl
+                ${theme.btnSecondary} ${theme.cardBorder} hover:scale-105 hover:shadow-xl
                 flex items-center justify-center gap-2 min-w-[180px] md:min-w-[200px]
               `}
             >

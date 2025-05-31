@@ -1,8 +1,10 @@
+import { FaNodeJs, FaReact } from "react-icons/fa6";
+
 export const courseList = [
   {
     id: "namaste-node",
     courseTitle: "Namaste Node",
-    icon: "🌟",
+    icon: FaNodeJs,
 
     seasons: [
       {
@@ -191,7 +193,7 @@ export const courseList = [
   {
     id: "namaste-react",
     courseTitle: "Namaste React",
-    icon: "⚛️",
+    icon: FaReact,
 
     seasons: [
       {

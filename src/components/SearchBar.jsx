@@ -14,13 +14,15 @@ const SearchBar = ({ searchTerm, setSearchTerm, placeholder = "Search episodes..
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder={placeholder}
-        className="block w-full pl-10 pr-3 py-2 
+        className={`
+
+          block w-full pl-10 pr-3 py-2  
           bg-background-light dark:bg-background-dark 
           text-text-light dark:text-text-dark 
           placeholder-text-muted dark:placeholder-gray-400 
           border border-border-light dark:border-border-dark 
           rounded-lg focus:outline-none focus:ring-2 
-          focus:ring-primary focus:border-transparent"
+          focus:ring-primary focus:border-transparent `}
       />
     </div>
   );
