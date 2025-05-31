@@ -1,73 +1,202 @@
-import { RiMenuUnfold3Fill, RiMenuFold3Fill } from "react-icons/ri";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useBookmarks } from "../hook/useBookmark";
+import { RiMenuFold3Fill, RiMenuUnfold3Fill } from "react-icons/ri";
+import SearchBar from "./SearchBar";
+import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
+import { useTheme } from "../hook/useTheme";
 
-const SideBar = ({ isSidebarVisible, course, toggleSidebar }) => {
+const Sidebar = ({ course }) => {
   const location = useLocation();
+  const [searchTerm, setSearchTerm] = useState("");
+  const { bookmarks, toggleBookmark } = useBookmarks();
+  const theme = useTheme();
+
+  const filteredEpisodes =
+    course?.seasons.flatMap((season) =>
+      season.episodes
+        .filter(
+          (episode) =>
+            episode.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            episode.description
+              ?.toLowerCase()
+              .includes(searchTerm.toLowerCase())
+        )
+        .map((episode) => ({
+          ...episode,
+          seasonId: season.id,
+          seasonTitle: season.title,
+        }))
+    ) || [];
 
   return (
-    <div>
-      {/* Sidebar */}
-      {isSidebarVisible && (
-        <aside className="fixed w-80 p-4 pb-4  border-r border-gray-200 bg-base-100 h-screen overflow-y-scroll transition-all duration-300">
-          {course ? (
+    <>
+      <div className="fixed inset-0  z-40 md:hidden" />
+      <aside
+        className={`fixed left-0 top-16 h-[calc(100vh-4rem)] w-80 ${theme.background}  z-50 overflow-y-auto`}
+      >
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6">
             <div>
-              <div className="flex justify-between items-center mb-4 ">
-                <h2 className="text-lg font-thin">{course.courseTitle}</h2>
-                <button
-                  onClick={toggleSidebar}
-                  className="p-2 rounded-md bg-base-200 shadow-md transition-all duration-300"
-                >
-                  <RiMenuFold3Fill size={18} />
-                </button>
-              </div>
+              <h2
+                className={`text-lg font-bold flex items-center ${theme.textPrimary}`}
+              >
+                {course?.icon} {course?.courseTitle}
+              </h2>
+              <p className={`text-sm mt-1 ${theme.textSecondary}`}>
+                {course?.description}
+              </p>
+            </div>
+          </div>
 
-              {course.seasons.map((season) => (
-                <div key={season.id} className="mb-4">
-                  <h3 className="text-lg font-semibold text-blue-700 mb-2">
+          <SearchBar
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            placeholder="Search episodes..."
+          />
+
+          <div className="space-y-6">
+            {searchTerm ? (
+              <div>
+                <h3
+                  className={`text-sm font-semibold mb-3 ${theme.textPrimary}`}
+                >
+                  Search Results ({filteredEpisodes.length})
+                </h3>
+                <div className="space-y-2">
+                  {filteredEpisodes.map((episode) => {
+                    const episodePath = `/${course.id}/${episode.seasonId}/${episode.id}`;
+                    const isActive = location.pathname === episodePath;
+                    const isBookmarked = bookmarks.includes(episodePath);
+
+                    return (
+                      <div
+                        key={`${episode.seasonId}-${episode.id}`}
+                        className="group"
+                      >
+                        <Link
+                          to={episodePath}
+                          className={`block p-3 rounded-lg transition-all duration-200 ${
+                            isActive
+                              ? `${theme.accent} ${theme.accentForeground} ${theme.border} border`
+                              : `${theme.textSecondary} ${theme.hover}`
+                          }`}
+                        >
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium truncate">
+                                {episode.title}
+                              </p>
+                              <p
+                                className={`text-xs mt-1 ${theme.textTertiary}`}
+                              >
+                                {episode.seasonTitle}
+                              </p>
+                              {episode.description && (
+                                <p
+                                  className={`text-xs mt-1 line-clamp-2 ${theme.textTertiary}`}
+                                >
+                                  {episode.description}
+                                </p>
+                              )}
+                            </div>
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                toggleBookmark(episodePath);
+                              }}
+                              className="ml-2 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              {isBookmarked ? (
+                                <BsBookmarkFill
+                                  size={14}
+                                  className="text-yellow-500"
+                                />
+                              ) : (
+                                <BsBookmark
+                                  size={14}
+                                  className={`${theme.textTertiary}`}
+                                />
+                              )}
+                            </button>
+                          </div>
+                        </Link>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              course?.seasons.map((season) => (
+                <div key={season.id}>
+                  <h3
+                    className={`text-sm font-semibold mb-3 flex items-center ${theme.textPrimary}`}
+                  >
+                    <div
+                      className={`w-2 h-2 rounded-full mr-2 ${theme.accent}`}
+                    ></div>
                     {season.title}
                   </h3>
-                  <ul className="space-y-1 pb-4 mb-20">
+                  <div className="space-y-1 pl-4">
                     {season.episodes.map((episode) => {
                       const episodePath = `/${course.id}/${season.id}/${episode.id}`;
                       const isActive = location.pathname === episodePath;
+                      const isBookmarked = bookmarks.includes(episodePath);
 
                       return (
-                        <li key={episode.id}>
+                        <div key={episode.id} className="group">
                           <Link
                             to={episodePath}
-                            className={`block px-3 py-2 rounded-md transition-all duration-200 text-sm font-medium ${
+                            className={`flex items-center justify-between p-2 rounded-lg transition-all duration-200 ${
                               isActive
-                                ? "bg-blue-100 text-blue-800 font-semibold"
-                                : "text-base-content/80 hover:bg-gray-100 hover:text-blue-700"
+                                ? `${theme.accent} ${theme.accentForeground}`
+                                : `${theme.textSecondary} ${theme.hover} hover:${theme.textPrimary}`
                             }`}
                           >
-                            {episode.title}
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium truncate">
+                                {episode.title}
+                              </p>
+                              {episode.description && (
+                                <p
+                                  className={`text-xs mt-1 truncate ${theme.textTertiary}`}
+                                >
+                                  {episode.description}
+                                </p>
+                              )}
+                            </div>
+                            <button
+                              onClick={(e) => {
+                                e.preventDefault();
+                                toggleBookmark(episodePath);
+                              }}
+                              className="ml-2 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              {isBookmarked ? (
+                                <BsBookmarkFill
+                                  size={12}
+                                  className="text-yellow-500"
+                                />
+                              ) : (
+                                <BsBookmark
+                                  size={12}
+                                  className={`${theme.textTertiary}`}
+                                />
+                              )}
+                            </button>
                           </Link>
-                        </li>
+                        </div>
                       );
                     })}
-                  </ul>
+                  </div>
                 </div>
-              ))}
-              
-            </div>
-          ) : (
-            <p className="text-red-500">Course not found!</p>
-          )}
-        </aside>
-      )}
-
-      {/* Toggle Button */}
-      {!isSidebarVisible && (
-        <button
-          onClick={toggleSidebar}
-          className="fixed top-20 left-4 z-50 p-2 rounded-md bg-base-100 shadow-md transition-all duration-300"
-        >
-          <RiMenuUnfold3Fill size={18} />
-        </button>
-      )}
-    </div>
+              ))
+            )}
+          </div>
+        </div>
+      </aside>
+    </>
   );
 };
 
-export default SideBar;
+export default Sidebar;

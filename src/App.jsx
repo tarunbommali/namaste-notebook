@@ -1,35 +1,35 @@
-import "./App.css";
-import { useTheme } from "./hook/useTheme";
-import Header from "./components/Header";
-import Home from "./pages/Home";
-import Markdown from "./pages/Markdown";
+import Home from '../src/pages/Home'
+import CourseOverview from '../src/pages/CourseOverview'
+import Markdown from '../src/pages/Markdown'
+import { BrowserRouter, Routes, Route , Navigate} from 'react-router-dom'
+import {useTheme} from '../src/hook/useTheme'
+import Header from '../src/components/Header'
 
-// 1. Import Routes in addition to BrowserRouter and Route
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import RedirectToFirstEpisode from "./components/RedirectToFirstEpisode";
+const App = () => {
+  useTheme();
+  const currentTheme = localStorage.getItem("theme") || "light";
 
-function App() {
-  const { theme, toggleTheme } = useTheme();
+  const toggleTheme = () => {
+    const newTheme = currentTheme === "light" ? "dark" : "light";
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+    document.documentElement.className = newTheme;
+    window.location.reload(); 
+  };
 
   return (
-    <div className="App min-h-[100vh] pb-4">
-      {/* BrowserRouter should wrap your entire app that needs routing */}
-      <BrowserRouter>
-        <Header theme={theme} toggleTheme={toggleTheme} />
-        <main className="pt-6 md:pt-16 pb-4">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/:courseId" element={<RedirectToFirstEpisode />} />
-
-            <Route
-              path="/:courseId/:seasonId/:episodeId"
-              element={<Markdown />}
-            />
-          </Routes>
-        </main>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <div className={`min-h-screen`}>
+        <Header  theme={currentTheme} toggleTheme={toggleTheme}/>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/:courseId" element={<CourseOverview />} />
+          <Route path="/:courseId/:seasonId/:episodeId" element={<Markdown />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;

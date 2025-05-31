@@ -50,8 +50,6 @@ body {
   padding: 1rem;
   color: var(--heading-color);
   display:flex;
-  justify-content: between;
-  items: center;
   font-size: thin;
 }
 
@@ -75,7 +73,6 @@ body {
 /* MARKDOWN CONTAINER STYLES (now with variables) */
 .markdown-content {
   text-align: left;
-  max-width: 800px;
   margin: 2rem auto;
   padding: 2rem;
   background-color: var(--content-bg-color);
@@ -139,7 +136,7 @@ body {
 /* Tables */
 .markdown-content table {
   display: block;
-  width: 100%;
+  width: 60vw;
   overflow: auto;
   border-spacing: 0;
   border-collapse: collapse;

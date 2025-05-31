@@ -1,21 +1,26 @@
-import { useParams } from "react-router-dom";
+import { useBookmarks } from "../hook/useBookmark";
+import { courseList } from "../utils/constants";
+import { useParams, Link } from "react-router-dom";
+import SideBar from "../components/SideBar";
+import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import ReactMarkdown from "react-markdown";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
-import SideBar from "../components/SideBar";
-import { courseList, REPO_URL } from "../utils/constants";
+import { NavigationButtons } from "../components/NavigationButton";
 import { readmeMap } from "../utils/readmeMap";
-import { useState } from "react";
+import { useTheme } from "../hook/useTheme";
+// import MarkdownRenderer from "../components/MarkdownRenderer";
 
 const Markdown = () => {
   const { courseId, seasonId, episodeId } = useParams();
-  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
 
-  const course = courseList.find((course) => course.id === courseId);
+  const { bookmarks, toggleBookmark } = useBookmarks();
+  const theme = useTheme();
 
-  const toggleSidebar = () => setIsSidebarVisible((prev) => !prev);
+  const course = courseList.find((c) => c.id === courseId);
+  const season = course?.seasons.find((s) => s.id === seasonId);
+  const episode = season?.episodes.find((e) => e.id === episodeId);
 
-  // Normalize params (dashes to underscores, lowercase)
   const normalize = (val) => val?.toLowerCase().replace(/-/g, "_");
 
   const content =
@@ -23,47 +28,85 @@ const Markdown = () => {
       normalize(episodeId)
     ];
 
-  return (
-    <div className="flex md:flex-row">
-      <SideBar
-        isSidebarVisible={isSidebarVisible}
-        course={course}
-        toggleSidebar={toggleSidebar}
-      />
+  const episodePath = `/${courseId}/${seasonId}/${episodeId}`;
+  const isBookmarked = bookmarks.includes(episodePath);
 
-      <div
-        className={`markdown-content p-6 max-w-4xl transition-all duration-300 ${
-          isSidebarVisible ? "ml-80" : "ml-12"
-        }`}
-      >
-        {content ? (
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeSlug]}
+  return (
+    <div className={`min-h-screen ${theme.bgColor}`}>
+      <SideBar course={course} />
+
+      <main className={`pt-16 transition-all duration-300`}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div
+            className={`rounded-lg shadow-lg ${theme.cardBg} ${theme.cardBorder}`}
           >
-            {content}
-          </ReactMarkdown>
-        ) : (
-          <div className="text-red-500">
-            <p className="text-xl font-semibold mb-2">🚧 Content Missing!</p>
-            <p className="mb-2">
-              This episode doesn't have content yet. Want to help the community?
-            </p>
-            <p>
-              👉{" "}
-              <a
-                href={REPO_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 mx-2 underline hover:text-blue-800"
-              >
-                Fork the repo on GitHub 
-              </a>
-                and contribute to the Namaste Dev Folks 🙌
-            </p>
+            <div className={`p-6 border-b ${theme.cardBorder}`}>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-3">
+                  <span className="text-2xl">{course.icon}</span>
+                  <div>
+                    <h1 className={`text-2xl font-bold ${theme.textColor}`}>
+                      {episode.title}
+                    </h1>
+                    <p className={theme.mutedText}>
+                      {course.courseTitle} • {season.title}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => toggleBookmark(episodePath)}
+                  className={`p-2 rounded-lg transition-colors ${theme.hoverBg}`}
+                >
+                  {isBookmarked ? (
+                    <BsBookmarkFill size={20} className={theme.highlightText} />
+                  ) : (
+                    <BsBookmark size={20} className="text-gray-400" />
+                  )}
+                </button>
+              </div>
+              {episode.description && (
+                <p className={theme.mutedText}>{episode.description}</p>
+              )}
+            </div>
+
+            <div className="p-6">
+              {!content ? (
+                <div
+                  className={`min-h-screen pt-16 flex items-center justify-center ${theme.bgColor}`}
+                >
+                  <div className="text-center">
+                    <h1
+                      className={`text-2xl font-bold mb-4 ${theme.headingColor}`}
+                    >
+                      Content Not Found
+                    </h1>
+                    <p className={`mb-6 ${theme.mutedText}`}>
+                      The requested episode could not be found.
+                    </p>
+                    <Link
+                      to="/"
+                      className={`px-4 py-2 rounded-lg transition-colors ${theme.btn.primary}`}
+                    >
+                      Go Home
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  rehypePlugins={[rehypeSlug]}
+                >
+                  {content}
+                </ReactMarkdown>
+              )}
+              <NavigationButtons
+                course={course}
+                currentEpisode={{ seasonId, episodeId }}
+              />
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      </main>
     </div>
   );
 };

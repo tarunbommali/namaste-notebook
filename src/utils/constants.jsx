@@ -3,90 +3,90 @@ export const courseList = [
     id: "namaste-node",
     courseTitle: "Namaste Node",
     seasons: [
-    //   {
-    //     id: "season-1",
-    //     title: "Season 1",
-    //     episodes: [
-    //       {
-    //         id: "episode-1",
-    //         title: "01. Introduction",
-    //         description: "",
-    //         topicsCovered: [],
-    //       },
-    //       {
-    //         id: "episode-2",
-    //         title: "02. JS on Server",
-    //         description: "",
-    //         topicsCovered: [],
-    //       },
-    //       {
-    //         id: "episode-3",
-    //         title: "03. Let's Write Code",
-    //         description: "",
-    //         topicsCovered: [],
-    //       },
-    //       {
-    //         id: "episode-4",
-    //         title: "04. Module, export, require",
-    //         description: "",
-    //         topicsCovered: [],
-    //       },
-    //       {
-    //         id: "episode-5",
-    //         title: "05. Diving into the Node.js GitHub Repo",
-    //         description: "",
-    //         topicsCovered: [],
-    //       },
-    //       {
-    //         id: "episode-6",
-    //         title: "06. Libuv Async I/O",
-    //         description: "",
-    //         topicsCovered: [],
-    //       },
-    //       {
-    //         id: "episode-7",
-    //         title: "07. Sync vs Async, setTimeout(0) Code",
-    //         description: "",
-    //         topicsCovered: [],
-    //       },
-    //       {
-    //         id: "episode-8",
-    //         title: "08. Deep Dive into V8 JavaScript Engine",
-    //         description: "",
-    //         topicsCovered: [],
-    //       },
-    //       {
-    //         id: "episode-9",
-    //         title: "09. Libuv Event Loop",
-    //         description: "",
-    //         topicsCovered: [],
-    //       },
-    //       {
-    //         id: "episode-10",
-    //         title: "10. Thread Pool in Libuv",
-    //         description: "",
-    //         topicsCovered: [],
-    //       },
-    //       {
-    //         id: "episode-11",
-    //         title: "11. Creating a Server",
-    //         description: "",
-    //         topicsCovered: [],
-    //       },
-    //       {
-    //         id: "episode-12",
-    //         title: "12. Database: SQL vs NoSQL",
-    //         description: "",
-    //         topicsCovered: [],
-    //       },
-    //       {
-    //         id: "episode-13",
-    //         title: "13. Creating a Database in MongoDB",
-    //         description: "",
-    //         topicsCovered: [],
-    //       },
-    //     ],
-    //   },
+      {
+        id: "season-1",
+        title: "Season 1",
+        episodes: [
+          {
+            id: "episode-1",
+            title: "01. Introduction",
+            description: "",
+            topicsCovered: [],
+          },
+          {
+            id: "episode-2",
+            title: "02. JS on Server",
+            description: "",
+            topicsCovered: [],
+          },
+          {
+            id: "episode-3",
+            title: "03. Let's Write Code",
+            description: "",
+            topicsCovered: [],
+          },
+          {
+            id: "episode-4",
+            title: "04. Module, export, require",
+            description: "",
+            topicsCovered: [],
+          },
+          {
+            id: "episode-5",
+            title: "05. Diving into the Node.js GitHub Repo",
+            description: "",
+            topicsCovered: [],
+          },
+          {
+            id: "episode-6",
+            title: "06. Libuv Async I/O",
+            description: "",
+            topicsCovered: [],
+          },
+          {
+            id: "episode-7",
+            title: "07. Sync vs Async, setTimeout(0) Code",
+            description: "",
+            topicsCovered: [],
+          },
+          {
+            id: "episode-8",
+            title: "08. Deep Dive into V8 JavaScript Engine",
+            description: "",
+            topicsCovered: [],
+          },
+          {
+            id: "episode-9",
+            title: "09. Libuv Event Loop",
+            description: "",
+            topicsCovered: [],
+          },
+          {
+            id: "episode-10",
+            title: "10. Thread Pool in Libuv",
+            description: "",
+            topicsCovered: [],
+          },
+          {
+            id: "episode-11",
+            title: "11. Creating a Server",
+            description: "",
+            topicsCovered: [],
+          },
+          {
+            id: "episode-12",
+            title: "12. Database: SQL vs NoSQL",
+            description: "",
+            topicsCovered: [],
+          },
+          {
+            id: "episode-13",
+            title: "13. Creating a Database in MongoDB",
+            description: "",
+            topicsCovered: [],
+          },
+        ],
+      },
       {
         id: "season-2",
         title: "Season 2",
@@ -353,3 +353,4 @@ export const courseList = [
 ];
 
 export const REPO_URL = "https://github.com/tarunbommali/namaste-notebook";
+export const WEBSITE_URL = "https://namastenotebook.vercel.app/"
